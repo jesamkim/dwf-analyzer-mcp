@@ -1,5 +1,7 @@
 # DWF Analyzer MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@jesamkim/dwf-analyzer-mcp)](https://smithery.ai/server/@jesamkim/dwf-analyzer-mcp)
+
 A Model Context Protocol (MCP) server for analyzing DWF (Design Web Format) files using Amazon Bedrock's Nova Pro model for visual analysis.
 
 ## Features
@@ -9,6 +11,8 @@ A Model Context Protocol (MCP) server for analyzing DWF (Design Web Format) file
 - **Visual Analysis**: Analyze drawings using Amazon Nova Pro multimodal AI model
 - **Comprehensive Analysis**: Combined metadata extraction, image processing, and visual analysis
 - **Multiple Focus Areas**: Support for general, structural, dimensional, connectivity, and annotation analysis
+- **Observability & Metrics**: Real-time monitoring of tool usage, error tracking, and performance analytics
+- **Thread-Safe Operations**: Concurrent request handling with automatic metrics collection
 
 ## Installation
 
@@ -132,6 +136,8 @@ Add to your MCP settings:
 
 ## Available Tools
 
+### Core Analysis Tools
+
 ### `extract_dwf_metadata`
 
 Extract metadata and basic information from a DWF file.
@@ -170,6 +176,49 @@ Perform comprehensive analysis including metadata, images, and visual analysis.
 - `file_path` (string): Path to the DWF file
 
 **Returns:** Dictionary containing complete analysis results
+
+### Observability & Monitoring Tools
+
+### `get_usage_statistics`
+
+Get tool usage statistics for monitoring and analytics.
+
+**Parameters:**
+- `hours` (integer, optional): Number of hours to look back (default: 24)
+
+**Returns:** Dictionary containing usage statistics including:
+- Total requests and success/failure rates
+- Per-tool usage metrics and response times
+- Recent activity log
+
+### `get_error_statistics`
+
+Get error statistics and common failure patterns.
+
+**Returns:** Dictionary containing:
+- Error categorization by type
+- Error frequency and last occurrence
+- Sample error messages for debugging
+
+### `get_performance_metrics`
+
+Get performance metrics including response times and throughput.
+
+**Returns:** Dictionary containing:
+- Response time statistics (avg, min, max, percentiles)
+- File processing metrics
+- Performance trends
+
+### `export_metrics_report`
+
+Export comprehensive metrics report to JSON file.
+
+**Parameters:**
+- `file_path` (string, optional): Path to save the report (auto-generated if not provided)
+
+**Returns:** Dictionary containing export status and report metadata
+
+### System Tools
 
 ### `health_check`
 
@@ -261,6 +310,29 @@ images = result["image_extraction"]
 visual = result["visual_analysis"]
 ```
 
+### Monitoring and Analytics
+
+```python
+# Get usage statistics for the last 24 hours
+stats = get_usage_statistics(hours=24)
+print(f"Total requests: {stats['statistics']['total_requests']}")
+print(f"Success rate: {stats['statistics']['successful_requests'] / stats['statistics']['total_requests'] * 100:.1f}%")
+
+# Get error statistics
+errors = get_error_statistics()
+for error_type, details in errors["error_statistics"]["errors"].items():
+    print(f"{error_type}: {details['count']} occurrences")
+
+# Get performance metrics
+perf = get_performance_metrics()
+print(f"Average response time: {perf['performance_metrics']['response_times']['avg_ms']:.1f}ms")
+print(f"95th percentile: {perf['performance_metrics']['response_times']['p95_ms']:.1f}ms")
+
+# Export comprehensive metrics report
+report = export_metrics_report("metrics_report.json")
+print(f"Report saved to: {report['file_path']}")
+```
+
 ## Troubleshooting
 
 ### Common Issues
@@ -296,6 +368,16 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 
 ## Changelog
+
+### v0.2.0
+
+- **Observability & Metrics**: Comprehensive monitoring and analytics system
+- **Usage Statistics**: Real-time tracking of tool usage patterns and success rates
+- **Error Analytics**: Categorized error tracking with sample messages and trends
+- **Performance Monitoring**: Response time analysis with percentiles and throughput metrics
+- **Metrics Export**: JSON export functionality for detailed analysis and reporting
+- **Thread-Safe Operations**: Concurrent request handling with automatic metrics collection
+- **Enhanced Testing**: Comprehensive test suite for metrics and observability features
 
 ### v0.1.0
 

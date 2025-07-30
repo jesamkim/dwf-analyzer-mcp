@@ -332,7 +332,7 @@ def health_check() -> Dict[str, Any]:
         return {
             "status": "healthy",
             "service": "DWF Analyzer MCP Server",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "aws_bedrock": aws_status,
             "image_processing": pil_status,
             "timestamp": _get_current_timestamp()
