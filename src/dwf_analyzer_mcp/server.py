@@ -5,6 +5,7 @@ Provides tools for parsing DWF files, extracting images, and performing visual a
 
 import os
 import json
+from datetime import datetime
 from typing import Dict, Any, Optional
 from fastmcp import FastMCP
 from loguru import logger
@@ -13,6 +14,7 @@ from .tools.dwf_parser import DWFParser
 from .tools.image_extractor import DWFImageExtractor
 from .tools.visual_analyzer import DWFVisualAnalyzer
 from .utils.model_manager import ModelManager
+from .utils.metrics import get_metrics_collector, track_tool_usage
 from .resources.schemas import AnalysisConfig
 
 
@@ -36,6 +38,7 @@ def get_model_manager() -> ModelManager:
 
 
 @mcp.tool()
+@track_tool_usage("extract_dwf_metadata")
 def extract_dwf_metadata(file_path: str) -> Dict[str, Any]:
     """
     Extract metadata and basic information from a DWF file.
@@ -76,6 +79,7 @@ def extract_dwf_metadata(file_path: str) -> Dict[str, Any]:
 
 
 @mcp.tool()
+@track_tool_usage("extract_dwf_images")
 def extract_dwf_images(file_path: str, output_dir: Optional[str] = None) -> Dict[str, Any]:
     """
     Extract embedded images from a DWF file.
@@ -126,6 +130,7 @@ def extract_dwf_images(file_path: str, output_dir: Optional[str] = None) -> Dict
 
 
 @mcp.tool()
+@track_tool_usage("analyze_dwf_visual")
 async def analyze_dwf_visual(
     file_path: str, 
     focus_area: str = "general",
@@ -197,6 +202,7 @@ async def analyze_dwf_visual(
 
 
 @mcp.tool()
+@track_tool_usage("analyze_dwf_comprehensive")
 async def analyze_dwf_comprehensive(file_path: str) -> Dict[str, Any]:
     """
     Perform comprehensive analysis of a DWF file including metadata, images, and visual analysis.
@@ -303,6 +309,7 @@ def get_supported_formats() -> str:
 
 # Health check endpoint
 @mcp.tool()
+@track_tool_usage("health_check")
 def health_check() -> Dict[str, Any]:
     """
     Perform a health check of the DWF analyzer service.
@@ -335,6 +342,123 @@ def health_check() -> Dict[str, Any]:
         return {
             "status": "unhealthy",
             "error": str(e),
+            "timestamp": _get_current_timestamp()
+        }
+
+
+@mcp.tool()
+def get_usage_statistics(hours: int = 24) -> Dict[str, Any]:
+    """
+    Get tool usage statistics for the specified time period.
+    
+    Args:
+        hours: Number of hours to look back (default: 24)
+        
+    Returns:
+        Dictionary containing usage statistics
+    """
+    try:
+        collector = get_metrics_collector()
+        stats = collector.get_tool_usage_stats(hours)
+        
+        return {
+            "success": True,
+            "statistics": stats,
+            "timestamp": _get_current_timestamp()
+        }
+        
+    except Exception as e:
+        return {
+            "error": True,
+            "message": f"Failed to get usage statistics: {str(e)}",
+            "timestamp": _get_current_timestamp()
+        }
+
+
+@mcp.tool()
+def get_error_statistics() -> Dict[str, Any]:
+    """
+    Get error statistics and common failure patterns.
+    
+    Returns:
+        Dictionary containing error statistics
+    """
+    try:
+        collector = get_metrics_collector()
+        error_stats = collector.get_error_statistics()
+        
+        return {
+            "success": True,
+            "error_statistics": error_stats,
+            "timestamp": _get_current_timestamp()
+        }
+        
+    except Exception as e:
+        return {
+            "error": True,
+            "message": f"Failed to get error statistics: {str(e)}",
+            "timestamp": _get_current_timestamp()
+        }
+
+
+@mcp.tool()
+def get_performance_metrics() -> Dict[str, Any]:
+    """
+    Get performance metrics including response times and throughput.
+    
+    Returns:
+        Dictionary containing performance metrics
+    """
+    try:
+        collector = get_metrics_collector()
+        perf_metrics = collector.get_performance_metrics()
+        
+        return {
+            "success": True,
+            "performance_metrics": perf_metrics,
+            "timestamp": _get_current_timestamp()
+        }
+        
+    except Exception as e:
+        return {
+            "error": True,
+            "message": f"Failed to get performance metrics: {str(e)}",
+            "timestamp": _get_current_timestamp()
+        }
+
+
+@mcp.tool()
+def export_metrics_report(file_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Export comprehensive metrics report to JSON file.
+    
+    Args:
+        file_path: Optional path to save the report (default: auto-generated)
+        
+    Returns:
+        Dictionary containing export status and report data
+    """
+    try:
+        collector = get_metrics_collector()
+        
+        if not file_path:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_path = f"dwf_analyzer_metrics_{timestamp}.json"
+        
+        report_data = collector.export_metrics(file_path)
+        
+        return {
+            "success": True,
+            "message": f"Metrics report exported to: {file_path}",
+            "file_path": file_path,
+            "report_size_bytes": len(report_data),
+            "timestamp": _get_current_timestamp()
+        }
+        
+    except Exception as e:
+        return {
+            "error": True,
+            "message": f"Failed to export metrics report: {str(e)}",
             "timestamp": _get_current_timestamp()
         }
 

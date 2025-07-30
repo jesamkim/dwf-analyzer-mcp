@@ -65,6 +65,22 @@
       {
         "name": "health_check",
         "description": "Perform a health check of the service"
+      },
+      {
+        "name": "get_usage_statistics",
+        "description": "Get tool usage statistics for monitoring and analytics"
+      },
+      {
+        "name": "get_error_statistics",
+        "description": "Get error statistics and common failure patterns"
+      },
+      {
+        "name": "get_performance_metrics",
+        "description": "Get performance metrics including response times and throughput"
+      },
+      {
+        "name": "export_metrics_report",
+        "description": "Export comprehensive metrics report to JSON file"
       }
     ],
     "resources": [
