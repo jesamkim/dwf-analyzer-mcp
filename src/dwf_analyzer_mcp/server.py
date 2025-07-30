@@ -37,8 +37,8 @@ def get_model_manager() -> ModelManager:
     return _model_manager
 
 
-@mcp.tool()
 @track_tool_usage("extract_dwf_metadata")
+@mcp.tool()
 def extract_dwf_metadata(file_path: str) -> Dict[str, Any]:
     """
     Extract metadata and basic information from a DWF file.
@@ -78,8 +78,8 @@ def extract_dwf_metadata(file_path: str) -> Dict[str, Any]:
         }
 
 
-@mcp.tool()
 @track_tool_usage("extract_dwf_images")
+@mcp.tool()
 def extract_dwf_images(file_path: str, output_dir: Optional[str] = None) -> Dict[str, Any]:
     """
     Extract embedded images from a DWF file.
@@ -129,8 +129,8 @@ def extract_dwf_images(file_path: str, output_dir: Optional[str] = None) -> Dict
         }
 
 
-@mcp.tool()
 @track_tool_usage("analyze_dwf_visual")
+@mcp.tool()
 async def analyze_dwf_visual(
     file_path: str, 
     focus_area: str = "general",
@@ -201,8 +201,8 @@ async def analyze_dwf_visual(
         }
 
 
-@mcp.tool()
 @track_tool_usage("analyze_dwf_comprehensive")
+@mcp.tool()
 async def analyze_dwf_comprehensive(file_path: str) -> Dict[str, Any]:
     """
     Perform comprehensive analysis of a DWF file including metadata, images, and visual analysis.
@@ -308,8 +308,8 @@ def get_supported_formats() -> str:
 
 
 # Health check endpoint
-@mcp.tool()
 @track_tool_usage("health_check")
+@mcp.tool()
 def health_check() -> Dict[str, Any]:
     """
     Perform a health check of the DWF analyzer service.
