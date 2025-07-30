@@ -1,5 +1,7 @@
 # DWF Analyzer MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@jesamkim/dwf-analyzer-mcp)](https://smithery.ai/server/@jesamkim/dwf-analyzer-mcp)
+
 A Model Context Protocol (MCP) server for analyzing DWF (Design Web Format) files using Amazon Bedrock's Nova Pro model for visual analysis.
 
 ## Features
@@ -11,6 +13,14 @@ A Model Context Protocol (MCP) server for analyzing DWF (Design Web Format) file
 - **Multiple Focus Areas**: Support for general, structural, dimensional, connectivity, and annotation analysis
 
 ## Installation
+
+### Installing via Smithery
+
+To install DWF Analyzer for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@jesamkim/dwf-analyzer-mcp):
+
+```bash
+npx -y @smithery/cli install @jesamkim/dwf-analyzer-mcp --client claude
+```
 
 ### Prerequisites
 
