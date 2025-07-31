@@ -16,6 +16,14 @@ A Model Context Protocol (MCP) server for analyzing DWF (Design Web Format) file
 
 ## Installation
 
+### Installing via Smithery
+
+To install DWF Analyzer for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@jesamkim/dwf-analyzer-mcp):
+
+```bash
+npx -y @smithery/cli install @jesamkim/dwf-analyzer-mcp --client claude
+```
+
 ### Prerequisites
 
 - Python 3.12 or higher

@@ -1,0 +1,34 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'dwf-analyzer-mcp', args: [], env: { AWS_ACCESS_KEY_ID: config.aws_access_key_id, AWS_SECRET_ACCESS_KEY: config.aws_secret_access_key, AWS_DEFAULT_REGION: config.aws_region, LOG_LEVEL: config.log_level } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - aws_access_key_id
+      - aws_secret_access_key
+    properties:
+      aws_access_key_id:
+        type: string
+        description: AWS Access Key ID for Bedrock access
+      aws_secret_access_key:
+        type: string
+        description: AWS Secret Access Key
+      aws_region:
+        type: string
+        default: us-west-2
+        description: AWS Region for Bedrock service
+      log_level:
+        type: string
+        default: INFO
+        description: Logging level
+  exampleConfig:
+    aws_access_key_id: AKIAEXAMPLEKEY
+    aws_secret_access_key: EXAMPLESECRETKEY
+    aws_region: us-west-2
+    log_level: INFO
