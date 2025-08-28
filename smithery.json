@@ -1,0 +1,99 @@
+{
+  "name": "dwf-analyzer-mcp",
+  "version": "0.2.0",
+  "description": "MCP Server for DWF drawing file analysis using Amazon Bedrock",
+  "author": "jesamkim",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/jesamkim/dwf-analyzer-mcp",
+  "repository": "https://github.com/jesamkim/dwf-analyzer-mcp",
+  "keywords": ["mcp", "dwf", "cad", "drawing", "analysis", "bedrock", "nova"],
+  "category": "analysis",
+  "connection_type": "http",
+  "configuration_schema": {
+    "type": "object",
+    "properties": {
+      "aws_access_key_id": {
+        "type": "string",
+        "description": "AWS Access Key ID for Bedrock access",
+        "title": "AWS Access Key ID"
+      },
+      "aws_secret_access_key": {
+        "type": "string",
+        "description": "AWS Secret Access Key",
+        "title": "AWS Secret Access Key",
+        "format": "password"
+      },
+      "aws_region": {
+        "type": "string",
+        "default": "us-west-2",
+        "description": "AWS Region for Bedrock service",
+        "title": "AWS Region",
+        "enum": ["us-west-2", "us-east-1", "eu-west-1", "ap-southeast-1"]
+      },
+      "log_level": {
+        "type": "string",
+        "default": "INFO",
+        "description": "Logging level",
+        "title": "Log Level",
+        "enum": ["DEBUG", "INFO", "WARNING", "ERROR"]
+      }
+    },
+    "required": ["aws_access_key_id", "aws_secret_access_key"]
+  },
+  "installation": {
+    "type": "uvx",
+    "package": "dwf-analyzer-mcp"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "extract_dwf_metadata",
+        "description": "Extract metadata and basic information from a DWF file"
+      },
+      {
+        "name": "extract_dwf_images", 
+        "description": "Extract embedded images from a DWF file"
+      },
+      {
+        "name": "analyze_dwf_visual",
+        "description": "Perform visual analysis of a DWF file using Amazon Nova Pro"
+      },
+      {
+        "name": "analyze_dwf_comprehensive",
+        "description": "Perform comprehensive analysis including metadata, images, and visual analysis"
+      },
+      {
+        "name": "health_check",
+        "description": "Perform a health check of the service"
+      }
+    ],
+    "resources": [
+      {
+        "name": "dwf://analysis/config",
+        "description": "Get the current analysis configuration schema"
+      },
+      {
+        "name": "dwf://analysis/supported-formats",
+        "description": "Get information about supported DWF formats and capabilities"
+      }
+    ]
+  },
+  "supported_formats": [
+    "DWF V00.22",
+    "DWF V00.30", 
+    "DWF V00.55",
+    "DWF V06.00"
+  ],
+  "requirements": {
+    "python": ">=3.12",
+    "aws_services": ["bedrock"],
+    "aws_models": [
+      "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+      "us.amazon.nova-pro-v1:0"
+    ]
+  },
+  "health_check": {
+    "endpoint": "health_check",
+    "timeout": 30
+  }
+}

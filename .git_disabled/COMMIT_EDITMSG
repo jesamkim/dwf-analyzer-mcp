@@ -1,0 +1,6 @@
+Fix decorator order for FastMCP compatibility
+
+- Moved @track_tool_usage decorator before @mcp.tool()
+- This resolves the 'Functions with *args are not supported' error
+- Server now loads successfully with all observability features
+- All tools are properly registered with metrics tracking
